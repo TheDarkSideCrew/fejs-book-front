@@ -16,21 +16,30 @@ const Navbar = () => {
       <a className="active" href="#home">
         <i className="fa fa-fw fa-home"></i> Home
       </a>
-      <a href="#">
+      <a href="#search">
         <i className="fa fa-fw fa-search"></i> Search
       </a>
-      <a href="#news">
-        <i className="fa fa-handshake-o" aria-hidden="true"></i> Friends
+      <a href="#friends">
+        <i className="fa fa-handshake-o"></i> Friends
       </a>
-      <a href="#contact">
-        <i className="fa fa-users" aria-hidden="true"></i> Groups
-      </a>
-      <a id="navbar-right" href="#login">
-        <i className="fa fa-fw fa-user"></i> Login
+      <a href="#groups">
+        <i className="fa fa-users"></i> Groups
       </a>
       <a href="#icon" className="icon" onClick={myFunction}>
         <i className="fa fa-bars"></i>
       </a>
+
+      <div className="dropdown" id="navbar-right">
+        <button href="#account" className="dropbtn">
+          <i className="fa fa-fw fa-user"></i> Account
+        </button>
+        <div className="dropdown-content">
+          <a href="#link">Settings</a>
+          <a href="#link">Register</a>
+          <a href="#link">Log In</a>
+          <a href="#link">Log Out</a>
+        </div>
+      </div>
     </div>
   );
 };
