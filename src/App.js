@@ -1,23 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import AddPost from "./components/AddPost";
+import { useState, useEffect } from "react";
 
 function App() {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const getPosts = async () => {
+      const taskFromServer = await getAllPosts();
+      setPosts(taskFromServer);
+    };
+    getPosts();
+  }, []);
+
+  // Fetch Tasks
+  const getAllPosts = async () => {
+    const res = await fetch("http://localhost:8080/posts");
+    const data = await res.json();
+
+    return data;
+  };
+
+  const addPost = async (task) => {
+    const res = await fetch(`http://localhost:8080/posts`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(task),
+    });
+    const data = await res.json();
+    setPosts([...posts, data]);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <AddPost onAdd={addPost} />
     </div>
   );
 }
