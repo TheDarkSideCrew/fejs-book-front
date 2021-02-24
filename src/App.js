@@ -1,5 +1,8 @@
 import AddPost from "./components/AddPost";
 import { useState, useEffect } from "react";
+import Posts from "./components/Posts";
+import "bootswatch/dist/darkly/bootstrap.min.css";
+import "./App.css";
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -12,7 +15,6 @@ function App() {
     getPosts();
   }, []);
 
-  // Fetch Tasks
   const getAllPosts = async () => {
     const res = await fetch("http://localhost:8080/posts");
     const data = await res.json();
@@ -32,10 +34,27 @@ function App() {
     setPosts([...posts, data]);
   };
 
+  const addUser = async () => {
+    const res = await fetch(`http://localhost:8080/users`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        firstName: "Amelia",
+        lastName: "Wright",
+        login: "ameliawright",
+        email: "awright@example.com"
+      }),
+    });
+    await res.json();
+  };
+
   return (
     <div className="App">
       <AddPost onAdd={addPost} />
-    </div>
+      {posts.length > 0 ? <Posts posts={posts} /> : "No Posts"}
+    </div >
   );
 }
 

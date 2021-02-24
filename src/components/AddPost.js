@@ -19,17 +19,19 @@ const AddPost = ({ onAdd }) => {
   };
 
   return (
-    <form className="add-post" onSubmit={onSubmit}>
-      <div>
-        <label>Add Post: </label>
-        <input
-          type="text"
-          placeholder="Post..."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
-      </div>
-      <input className="btn btn-block" type="submit" value="Save Post" />
+    <form className="form-group" onSubmit={onSubmit}>
+      <label className="col-form-label" for="inputDefault"></label>
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Write Your post here..."
+        id="inputDefault"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+      />
+      <button type="submit" className="btn btn-primary">
+        Save Post
+      </button>
     </form>
   );
 };
