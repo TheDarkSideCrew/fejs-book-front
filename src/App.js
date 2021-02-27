@@ -8,46 +8,19 @@ function App() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    const getPosts = async () => {
-      const taskFromServer = await getAllPosts();
-      setPosts(taskFromServer);
-    };
-    getPosts();
+    fetch("http://localhost:8080/posts")
+    .then(res => res.json())
+    .then(res => setPosts(res))
   }, []);
 
-  const getAllPosts = async () => {
-    const res = await fetch("http://localhost:8080/posts");
-    const data = await res.json();
-
-    return data;
-  };
-
-  const addPost = async (task) => {
-    const res = await fetch(`http://localhost:8080/posts`, {
+  const addPost = (task) => {
+    fetch(`http://localhost:8080/posts`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
       },
       body: JSON.stringify(task),
-    });
-    const data = await res.json();
-    setPosts([...posts, data]);
-  };
-
-  const addUser = async () => {
-    const res = await fetch(`http://localhost:8080/users`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        firstName: "Amelia",
-        lastName: "Wright",
-        login: "ameliawright",
-        email: "awright@example.com"
-      }),
-    });
-    await res.json();
+    })
   };
 
   return (

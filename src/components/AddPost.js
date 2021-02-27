@@ -7,15 +7,9 @@ const AddPost = ({ onAdd }) => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (!message) {
-      alert("Please add post");
-      return;
+    if (message) {
+      onAdd({ userId, message });
     }
-
-    onAdd({ userId, message });
-
-    setUserId(1);
-    setMessage("");
   };
 
   return (
