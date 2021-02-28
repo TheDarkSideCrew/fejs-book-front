@@ -4,7 +4,7 @@ import Posts from "./components/Posts";
 import "bootswatch/dist/darkly/bootstrap.min.css";
 import "./App.css";
 
-function App() {
+const App = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {

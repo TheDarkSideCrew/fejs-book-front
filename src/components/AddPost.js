@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const AddPost = ({ onAdd }) => {
-  const [userId, setUserId] = useState(1);
+  const userId = 1;
   const [message, setMessage] = useState("");
 
   const onSubmit = (e) => {
