@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import AddPost from "./components/AddPost";
+import { useState, useEffect } from "react";
+import Posts from "./components/Posts";
+import "bootswatch/dist/darkly/bootstrap.min.css";
+import "./App.css";
 
-function App() {
+const App = () => {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/posts")
+    .then(res => res.json())
+    .then(res => setPosts(res))
+  }, []);
+
+  const addPost = (task) => {
+    fetch(`http://localhost:8080/posts`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(task),
+    })
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <AddPost onAdd={addPost} />
+      {posts.length > 0 ? <Posts posts={posts} /> : "No Posts"}
+    </div >
   );
 }
 
