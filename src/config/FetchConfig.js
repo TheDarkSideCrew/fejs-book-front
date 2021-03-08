@@ -6,7 +6,7 @@ const saveToken = token => localStorage.setItem('accessToken', token)
 const clearToken = () => localStorage.removeItem('accessToken')
 const serverUrl = 'http://localhost:8080';
 
-const fetchJSONWithToken = (url, options = {}) => {
+const fetchJSONWithToken = (path, options = {}) => {
   const token = retrieveToken()
 
   let optionsWithToken = options
@@ -18,7 +18,7 @@ const fetchJSONWithToken = (url, options = {}) => {
     })
   }
 
-  return fetchJSON(url, optionsWithToken)
+  return fetchJSON(serverUrl + path, optionsWithToken)
 }
 
 const login = (login, password) => {
