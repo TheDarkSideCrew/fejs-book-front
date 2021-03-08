@@ -4,6 +4,7 @@ import { configureRefreshFetch, fetchJSON } from 'refresh-fetch'
 const retrieveToken = () => localStorage.getItem('accessToken')
 const saveToken = token => localStorage.setItem('accessToken', token)
 const clearToken = () => localStorage.removeItem('accessToken')
+const serverUrl = 'http://localhost:8080';
 
 const fetchJSONWithToken = (url, options = {}) => {
   const token = retrieveToken()
@@ -21,7 +22,7 @@ const fetchJSONWithToken = (url, options = {}) => {
 }
 
 const login = (login, password) => {
-  return fetchJSON('/auth/login', {
+  return fetchJSON(serverUrl + '/auth/login', {
     method: 'POST',
     body: JSON.stringify({
       login,
@@ -34,7 +35,7 @@ const login = (login, password) => {
 }
 
 const logout = () => {
-  return fetchJSONWithToken('/auth/logout', {
+  return fetchJSONWithToken(serverUrl + '/auth/logout', {
     method: 'POST'
   })
     .then(() => {
@@ -45,7 +46,7 @@ const logout = () => {
 const shouldRefreshToken = error => error.response.status === 401
 
 const refreshToken = () => {
-  return fetchJSONWithToken('/auth/refresh', {
+  return fetchJSONWithToken(serverUrl + '/auth/refresh', {
     method: 'POST'
   })
     .then(response => {
