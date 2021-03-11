@@ -1,9 +1,11 @@
 import merge from 'lodash/merge'
+import Cookies from 'js-cookie'
 import { configureRefreshFetch, fetchJSON } from 'refresh-fetch'
 
 const retrieveToken = () => localStorage.getItem('accessToken')
 const saveToken = token => localStorage.setItem('accessToken', token)
 const clearToken = () => localStorage.removeItem('accessToken')
+const clearLogoutRefreshToken = () => Cookies.remove("logoutRefreshToken")
 const serverUrl = 'http://localhost:8080';
 
 const fetchJSONWithToken = (path, options = {}) => {
@@ -12,6 +14,7 @@ const fetchJSONWithToken = (path, options = {}) => {
   let optionsWithToken = options
   if (token != null) {
     optionsWithToken = merge({}, options, {
+      credentials: 'include',
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -24,6 +27,7 @@ const fetchJSONWithToken = (path, options = {}) => {
 const login = (login, password) => {
   return fetchJSON(serverUrl + '/auth/login', {
     method: 'POST',
+    credentials: 'include',
     body: JSON.stringify({
       login,
       password
@@ -35,18 +39,19 @@ const login = (login, password) => {
 }
 
 const logout = () => {
-  return fetchJSONWithToken(serverUrl + '/auth/logout', {
+  return fetchJSONWithToken('/auth/logout', {
     method: 'POST'
   })
     .then(() => {
       clearToken()
+      clearLogoutRefreshToken()
     })
 }
 
-const shouldRefreshToken = error => error.response.status === 401
+const shouldRefreshToken = error => error.status === 401
 
 const refreshToken = () => {
-  return fetchJSONWithToken(serverUrl + '/auth/refresh', {
+  return fetchJSONWithToken('/auth/refresh', {
     method: 'POST'
   })
     .then(response => {
@@ -55,6 +60,7 @@ const refreshToken = () => {
     })
     .catch(error => {
       // redirect to login page
+      throw error
     })
 }
 
